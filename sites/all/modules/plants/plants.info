@@ -1,0 +1,4 @@
+name = plants
+description = This module provides info about plants
+core = 7.x
+version = 1.0

@@ -1,0 +1,26 @@
+name = Plants
+description = Custom theme written by dinesh and srihari.
+package = Core
+version = VERSION
+core = 7.x
+
+
+
+stylesheets[all][] = bs3/css/bootstrap.min.css
+stylesheets[all][] = globalstyle.css
+stylesheets[print][] = print.css
+
+
+
+
+scripts[] = bs3/js/bootstrap.min.js
+
+
+settings[garland_width] = fluid
+screenshot = screenshot.jpg
+
+; Information added by Drupal.org packaging script on 2017-06-21
+version = "7.56"
+project = "drupal"
+datestamp = "1498069849"
+

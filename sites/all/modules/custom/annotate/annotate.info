@@ -1,0 +1,4 @@
+name = annotate
+description = This is custom module used to annotate 
+core = 7.x
+package = custom

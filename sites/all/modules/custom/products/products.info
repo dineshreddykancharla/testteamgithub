@@ -1,0 +1,4 @@
+name = products
+description = This module is all about products for any e-commerce
+core = 7.x
+package = custom

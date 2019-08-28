@@ -1,0 +1,121 @@
+<?php
+
+function plants_help($path,$arg)
+{
+	switch ($path) {
+    case "admin/help#plants":
+      return t("Displays links to nodes created on this date"); 
+      break; 
+  }
+}
+
+
+/**
+ * Implements hook_block_info().
+ */
+function plants_block_info() {
+  $blocks['plants'] = array(
+    // The name that will appear in the block list.
+    'info' => t('Plant details'),
+    // Default setting.
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  );
+  return $blocks;
+}
+
+
+function plants_contents()
+{
+	
+	
+  //Use Database API to retrieve current posts.
+  $query = db_select('plants_info', 'n')
+    ->fields('n', array('plant_id', 'name'))
+    ->execute(); 
+	
+  return $query;  
+}
+
+
+
+
+/**
+ * Implements hook_block_view().
+ * 
+ * Prepares the contents of the block.
+ */
+function plants_block_view($delta = '') {
+	
+	
+  switch ($delta) {
+    case 'plants':
+	
+      $block['subject'] = t('Plant details');
+      if (user_access('access content')) {
+        // Use our custom function to retrieve data.
+        $result = plants_contents();
+		
+        // Array to contain items for the block to render.
+        $items = array();
+        // Iterate over the resultset and format as links.
+        foreach ($result as $node) {
+          $items[] = array(
+            'data' => l($node->name, 'node/' . $node->plant_id),
+          ); 
+        }
+		
+       // No content in the last week.
+        if (empty($items)) {
+          $block['content'] = t('No posts available.');  
+        } 
+        else {
+          // Pass data through theme function.
+		  
+          $block['content'] = theme('item_list', array(
+            'items' => $items));
+        }
+      }
+    return $block;
+  }
+  
+}
+
+
+
+/**
+ * Implements hook_node_info()
+ */
+function plants_node_info() {
+    return array(
+        'plants' => array(
+            'name' => t('plants'),
+            'base' => 'plants',
+            'description' => t('You can define new plants here'),
+            'has_title' => TRUE,
+            'title_label' => t('plant title'),
+			'plant_price' => array(
+            'field_name' => 'price',
+            'label' => t('Price of the product'),
+            'type' => 'text'
+        ),
+         )
+    );
+}
+
+
+
+
+/**
+ * Implement hook_form()
+ */
+function plants_form($node, $form_state) {
+    return node_content_form($node, $form_state);
+}
+
+
+
+function plants_install() {
+    node_types_rebuild();
+    $types = node_type_get_types();
+      node_add_body_field($types['plant']); 
+}

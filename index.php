@@ -1,5 +1,5 @@
 <?php
-
+/*test comment added by dinesh
 /**
  * @file
  * The PHP page that serves all page requests on a Drupal installation.
